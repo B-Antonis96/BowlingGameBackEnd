@@ -10,4 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 public class Notification {
     private String id;
+    private String message;
+    private Long gameId;
 }
