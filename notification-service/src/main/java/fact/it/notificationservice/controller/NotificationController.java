@@ -15,7 +15,7 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
-    @PostMapping
+    @PostMapping("/")
     public NotificationResponse createNotification(@RequestBody NotificationRequest request) {
         return notificationService.createNotification(request);
     }

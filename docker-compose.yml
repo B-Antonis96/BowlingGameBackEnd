@@ -32,68 +32,68 @@ services:
     networks:
       - bowling-network
  
-  user-service:
-    build:
-      context: ./user-service
-      dockerfile: Dockerfile
-    ports:
-      - 8082:8082
-    depends_on:
-      - user-db
-    environment:
-      MYSQL_DB_HOST: user-db
-      MYSQL_DB_PORT: 3307
-      MYSQL_DB_USERNAME: root
-      MYSQL_DB_PASSWORD: abc123
-    networks:
-      - bowling-network
+  # user-service:
+  #   build:
+  #     context: ./user-service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 8082:8082
+  #   depends_on:
+  #     - user-db
+  #   environment:
+  #     MYSQL_DB_HOST: user_db
+  #     MYSQL_DB_PORT: 3307
+  #     MYSQL_DB_USERNAME: root
+  #     MYSQL_DB_PASSWORD: abc123
+  #   networks:
+  #     - bowling-network
 
-  game-service:
-    build:
-      context: ./game-service
-      dockerfile: Dockerfile
-    ports:
-      - 8081:8081
-    depends_on:
-      - game-db
-    environment:
-      MYSQL_DB_HOST: game-db
-      MYSQL_DB_PORT: 3306
-      MYSQL_DB_USERNAME: root
-      MYSQL_DB_PASSWORD: abc123
-    networks:
-      - bowling-network
+  # game-service:
+  #   build:
+  #     context: ./game-service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 8081:8081
+  #   depends_on:
+  #     - game-db
+  #   environment:
+  #     MYSQL_DB_HOST: game_db
+  #     MYSQL_DB_PORT: 3306
+  #     MYSQL_DB_USERNAME: root
+  #     MYSQL_DB_PASSWORD: abc123
+  #   networks:
+  #     - bowling-network
 
-  notification-service:
-    build:
-      context: ./notification-service
-      dockerfile: Dockerfile
-    ports:
-      - 8080:8080
-    depends_on:
-      - mongodb-notification
-    environment:
-      MONGODB-NOTIFICATION_HOST: mongodb-notification
-      MONGODB-NOTIFICATION_PORT: 27017
-    networks:
-      - bowling-network
+  # notification-service:
+  #   build:
+  #     context: ./notification-service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 8080:8080
+  #   depends_on:
+  #     - mongodb-notification
+  #   environment:
+  #     MONGODB-NOTIFICATION_HOST: mongodb_notification
+  #     MONGODB-NOTIFICATION_PORT: 27017
+  #   networks:
+  #     - bowling-network
 
-  api-gateway:
-    build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
-    ports:
-      - 8083:8083
-    depends_on:
-      - user-service
-      - game-service
-      - notification-service
-    environment:
-      USER_SERVICE_URL: user-service:8082
-      GAME_SERVICE_URL: game-service:8081
-      NOTIFICATION_SERVICE_URL: notification-service:8080
-    networks:
-      - bowling-network
+  # api-gateway:
+  #   build:
+  #     context: ./api-gateway
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 8083:8083
+  #   depends_on:
+  #     - user-service
+  #     - game-service
+  #     - notification-service
+  #   environment:
+  #     USER_SERVICE_URL: user-service:8082
+  #     GAME_SERVICE_URL: game-service:8081
+  #     NOTIFICATION_SERVICE_URL: notification-service:8080
+  #   networks:
+  #     - bowling-network
 
 volumes:
   user-db-data:
