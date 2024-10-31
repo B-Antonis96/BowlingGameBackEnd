@@ -11,4 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NotificationResponse {
     private String id;
+    private String message;
+    private Long gameId;
 }

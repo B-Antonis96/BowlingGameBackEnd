@@ -14,4 +14,7 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private int currentTurn;
+    private int totalScore;
+    private boolean gameFinished;
 }

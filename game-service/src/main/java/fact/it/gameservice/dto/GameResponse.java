@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GameResponse {
-    private String id;
-
+    private Long id;
+    private int currentTurn;
+    private int totalScore;
+    private boolean gameFinished;
 }
