@@ -1,6 +1,6 @@
 # Use a multi-stage build to keep the final image small
 # Stage 1: Build the application
-FROM openjdk:17-jdk-alpine AS build
+FROM csanchez/maven:azulzulu-17-alpine AS build
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -9,13 +9,13 @@ WORKDIR /app
 COPY . .
 
 # Build the application and create the JAR file
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # Stage 2: Create the final image
-FROM openjdk:17-jdk-alpine
+FROM csanchez/maven:azulzulu-17-alpine
 
 # Expose the application port
-EXPOSE 8082
+EXPOSE 8080
 
 # Copy the JAR file from the build stage
 COPY --from=build /app/target/*.jar app.jar

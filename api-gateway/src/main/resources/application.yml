@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 8080
 
 logging:
   level:
@@ -13,25 +13,26 @@ spring:
   cloud:
     gateway:
       routes:
-        # Route for the game-service
-        - id: game-service
-          uri: http://game-service:8081
-          predicates:
-            - Path=/api/games/**
-          filters:
-            - RewritePath=/api/games/(?<path>.*), /$\\{path}
 
         # Route for the user-service
         - id: user-service
-          uri: http://user-service:8082
+          uri: http://${USER_SERVICE_URI:user-service:8080}
           predicates:
             - Path=/api/users/**
           filters:
             - RewritePath=/api/users/(?<path>.*), /$\\{path}
 
+        # Route for the game-service
+        - id: game-service
+          uri: http://${GAME_SERVICE_URI:game-service:8080}
+          predicates:
+            - Path=/api/games/**
+          filters:
+            - RewritePath=/api/games/(?<path>.*), /$\\{path}
+
         # Route for the notification-service
         - id: notification-service
-          uri: http://notification-service:8080
+          uri: http://${NOTIFICATION_SERVICE_URI:notification-service:8080"}
           predicates:
             - Path=/api/notifications/**
           filters:
