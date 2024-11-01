@@ -1,6 +1,6 @@
 # Use a multi-stage build to keep the final image small
 # Stage 1: Build the application
-FROM csanchez/maven:azulzulu-17-alpine AS build
+FROM maven:3.9-eclipse-temurin-17 AS build
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -12,7 +12,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # Stage 2: Create the final image
-FROM csanchez/maven:azulzulu-17-alpine
+FROM maven:3.9-eclipse-temurin-17
 
 # Expose the application port
 EXPOSE 8080

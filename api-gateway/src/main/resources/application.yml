@@ -18,16 +18,16 @@ spring:
         - id: user-service
           uri: http://${USER_SERVICE_URI:user-service:8080}
           predicates:
-            - Path=/api/users/**
+            - Path=/api/user/**
 
         # Route for the game-service
         - id: game-service
           uri: http://${GAME_SERVICE_URI:game-service:8080}
           predicates:
-            - Path=/api/games/**
+            - Path=/api/game/**
 
         # Route for the notification-service
         - id: notification-service
           uri: http://${NOTIFICATION_SERVICE_URI:notification-service:8080}
           predicates:
-            - Path=/api/notifications/**
+            - Path=/api/notification/**
