@@ -1,11 +1,17 @@
 services:
+
+  #############
+  # DATABASES #
+  #############
   user-db:
     image: "mysql:latest"
     ports:
-      - "3307:3306"
+#      - ":3306"
+      - "3307:3306" # DEVELOPMENT/ DBA ONLY
     environment:
-      MYSQL_ROOT_PASSWORD: "abc123"
-      MYSQL_DATABASE: "user_db"
+      MYSQL_ROOT_USER: ${USER_DB_USERNAME}
+      MYSQL_ROOT_PASSWORD: ${USER_DB_PASSWORD}
+      MYSQL_DATABASE: ${USER_DB_NAME}
     volumes:
       - "user-db-data:/var/lib/mysql"
     networks:
@@ -14,24 +20,92 @@ services:
   game-db:
     image: "mysql:latest"
     ports:
-      - "3306:3306"
+#      - ":3306"
+      - "3306:3306" # DEVELOPMENT/ DBA ONLY
     environment:
-      MYSQL_ROOT_PASSWORD: "abc123"
-      MYSQL_DATABASE: "game_db"
+      MYSQL_ROOT_USER: ${GAME_DB_USERNAME}
+      MYSQL_ROOT_PASSWORD: ${GAME_DB_PASSWORD}
+      MYSQL_DATABASE: ${GAME_DB_NAME}
     volumes:
       - "game-db-data:/var/lib/mysql"
     networks:
       - "bowling-network"
  
-  mongodb-notification:
+  notification-db:
     image: "mongo:latest"
     ports:
-      - "27017:27017"
+#      - ":27017"
+      - "27017:27017" # DEVELOPMENT/ DBA ONLY
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${NOTIFICATION_DB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${NOTIFICATION_DB_PASSWORD}
     volumes:
       - "mongo-data:/data/db"
     networks:
       - "bowling-network"
 
+
+  ############
+  # SERVICES #
+  ############
+  user-service:
+    build:
+      context: "./user-service"
+      dockerfile: "Dockerfile"
+    ports:
+#      - ":8080"
+      - "8081:8080" # DEVELOPMENT ONLY
+    depends_on:
+      - "user-db"
+    environment:
+      MYSQL_DB_HOST: ${USER_DB_HOST}
+      MYSQL_DB_PORT: "3306"
+      MYSQL_DB_NAME: ${USER_DB_NAME}
+      MYSQL_DB_USERNAME: ${USER_DB_USERNAME}
+      MYSQL_DB_PASSWORD: ${USER_DB_PASSWORD}
+    networks:
+      - "bowling-network"
+
+  game-service:
+    build:
+      context: "./game-service"
+      dockerfile: "Dockerfile"
+    ports:
+#      - ":8080"
+      - "8082:8080" # DEVELOPMENT ONLY
+    depends_on:
+      - "game-db"
+    environment:
+      MYSQL_DB_HOST: ${GAME_DB_HOST}
+      MYSQL_DB_PORT: "3306"
+      MYSQL_DB_NAME: ${GAME_DB_NAME}
+      MYSQL_DB_USERNAME: ${GAME_DB_USERNAME}
+      MYSQL_DB_PASSWORD: ${GAME_DB_PASSWORD}
+    networks:
+      - "bowling-network"
+
+  notification-service:
+    build:
+      context: "./notification-service"
+      dockerfile: "Dockerfile"
+    ports:
+#      - ":8080"
+      - "8083:8080" # DEVELOPMENT ONLY
+    depends_on:
+      - "notification-db"
+    environment:
+      MONGODB_HOST: ${NOTIFICATION_DB_HOST}
+      MONGODB_PORT: "27017"
+      MONGODB_DOCUMENT_NAME: ${NOTIFICATION_DB_NAME}
+      MONGODB_USERNAME: ${NOTIFICATION_DB_USERNAME}
+      MONGODB_PASSWORD: ${NOTIFICATION_DB_PASSWORD}
+    networks:
+      - "bowling-network"
+
+
+  ###########
+  # GATEWAY #
+  ###########
   api-gateway:
     build:
       context: "./api-gateway"
@@ -43,65 +117,25 @@ services:
       - "game-service"
       - "notification-service"
     environment:
-      USER_SERVICE_URI: "user-service:8080"
-      GAME_SERVICE_URI: "game-service:8080"
-      NOTIFICATION_SERVICE_URI: "notification-service:8080"
-    networks:
-      - "bowling-network"
- 
-  user-service:
-    build:
-      context: "./user-service"
-      dockerfile: "Dockerfile"
-    ports:
-      - "8081:8080"
-    depends_on:
-      - "user-db"
-    environment:
-      MYSQL_DB_HOST: "user-db"
-      MYSQL_DB_PORT: "3306"
-      MYSQL_DB_NAME: "game_db"
-      MYSQL_DB_USERNAME: "root"
-      MYSQL_DB_PASSWORD: "abc123"
+      USER_SERVICE_URI: ${USER_SERVICE_URI}
+      GAME_SERVICE_URI: ${GAME_SERVICE_URI}
+      NOTIFICATION_SERVICE_URI: ${NOTIFICATION_SERVICE_URI}
     networks:
       - "bowling-network"
 
-  game-service:
-    build:
-      context: "./game-service"
-      dockerfile: "Dockerfile"
-    ports:
-      - "8082:8080"
-    depends_on:
-      - "game-db"
-    environment:
-      MYSQL_DB_HOST: "game-db"
-      MYSQL_DB_PORT: "3306"
-      MYSQL_DB_NAME: "game_db"
-      MYSQL_DB_USERNAME: "root"
-      MYSQL_DB_PASSWORD: "abc123"
-    networks:
-      - "bowling-network"
 
-  notification-service:
-    build:
-      context: "./notification-service"
-      dockerfile: "Dockerfile"
-    ports:
-      - "8083:8080"
-    depends_on:
-      - "mongodb-notification"
-    environment:
-      MONGODB_HOST: "mongodb-notification"
-      MONGODB_PORT: "27017"
-    networks:
-      - "bowling-network"
-
+###########
+# VOLUMES #
+###########
 volumes:
   user-db-data:
   game-db-data:
   mongo-data:
 
+
+############
+# NETWORKS #
+############
 networks:
   bowling-network:
     driver: "bridge"
