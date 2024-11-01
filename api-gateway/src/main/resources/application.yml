@@ -19,21 +19,15 @@ spring:
           uri: http://${USER_SERVICE_URI:user-service:8080}
           predicates:
             - Path=/api/users/**
-          filters:
-            - RewritePath=/api/users/(?<path>.*), /$\\{path}
 
         # Route for the game-service
         - id: game-service
           uri: http://${GAME_SERVICE_URI:game-service:8080}
           predicates:
             - Path=/api/games/**
-          filters:
-            - RewritePath=/api/games/(?<path>.*), /$\\{path}
 
         # Route for the notification-service
         - id: notification-service
-          uri: http://${NOTIFICATION_SERVICE_URI:notification-service:8080"}
+          uri: http://${NOTIFICATION_SERVICE_URI:notification-service:8080}
           predicates:
             - Path=/api/notifications/**
-          filters:
-            - RewritePath=/api/notifications/(?<path>.*), /$\\{path}
