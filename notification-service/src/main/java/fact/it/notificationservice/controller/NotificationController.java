@@ -3,7 +3,9 @@ package fact.it.notificationservice.controller;
 import fact.it.notificationservice.dto.NotificationRequest;
 import fact.it.notificationservice.dto.NotificationResponse;
 import fact.it.notificationservice.service.NotificationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +24,8 @@ public class NotificationController {
      * @return NotificationResponse containing the created notification details
      */
     @PostMapping("/create")
-    public NotificationResponse createNotification(@RequestBody NotificationRequest request) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public NotificationResponse createNotification(@Valid @RequestBody NotificationRequest request) {
         return notificationService.createNotification(request);
     }
 
@@ -33,6 +36,7 @@ public class NotificationController {
      * @return NotificationResponse containing the notification details
      */
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public NotificationResponse getNotification(@PathVariable String id) {
         return notificationService.getNotification(id);
     }
@@ -43,6 +47,7 @@ public class NotificationController {
      * @return List of NotificationResponse objects containing all notifications
      */
     @GetMapping("/all")
+    @ResponseStatus(HttpStatus.OK)
     public List<NotificationResponse> getAllNotifications() {
         return notificationService.getAllNotifications();
     }
@@ -50,12 +55,13 @@ public class NotificationController {
     /**
      * Updates a notification by its ID.
      *
-     * @param id The ID of the notification to update
+     * @param id      The ID of the notification to update
      * @param request The notification request containing the updated message
      * @return NotificationResponse containing the updated notification details
      */
     @PutMapping("/update/{id}")
-    public NotificationResponse updateNotification(@PathVariable String id, @RequestBody NotificationRequest request) {
+    @ResponseStatus(HttpStatus.OK)
+    public NotificationResponse updateNotification(@PathVariable String id, @Valid @RequestBody NotificationRequest request) {
         return notificationService.updateNotification(id, request);
     }
 
@@ -65,6 +71,7 @@ public class NotificationController {
      * @param id The ID of the notification to delete
      */
     @DeleteMapping("/delete/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public void deleteNotification(@PathVariable String id) {
         notificationService.deleteNotification(id);
     }

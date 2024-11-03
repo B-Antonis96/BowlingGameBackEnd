@@ -71,7 +71,7 @@ class NotificationServiceUnitTests {
 
     //region Read
     @Test
-    void testGetNotification() {
+    void testGetNotificationById() {
         // Arrange
         when(notificationRepository.findById(TEST_ID)).thenReturn(Optional.of(testNotification));
 
