@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceTests {
+public class UserServiceUnitTests {
 
     @Mock
     private UserRepository userRepository;
@@ -58,7 +58,7 @@ class UserServiceTests {
 
     //region Create
     @Test
-    void testCreateUser() {
+    public void testCreateUser_Success() {
         // Arrange
         when(userRepository.save(any(User.class))).thenReturn(testUser);
 
@@ -76,7 +76,7 @@ class UserServiceTests {
 
     //region Read
     @Test
-    void testGetUserById() {
+    public void testGetUserById_Success() {
         // Arrange
         when(userRepository.findById(TEST_ID)).thenReturn(Optional.of(testUser));
 
@@ -91,7 +91,7 @@ class UserServiceTests {
     }
 
     @Test
-    void testGetUserById_FailureIfNotFound() {
+    public void testGetUserById_FailureIfNotFound() {
         // Arrange
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
@@ -101,7 +101,7 @@ class UserServiceTests {
     }
 
     @Test
-    void testGetAllUsers() {
+    public void testGetAllUsers_Success() {
         // Arrange
         List<User> users = Arrays.asList(testUser, testUser.toBuilder().id(2L).build());
         when(userRepository.findAll()).thenReturn(users);
@@ -118,7 +118,7 @@ class UserServiceTests {
 
     //region Update
     @Test
-    void testUpdateUser() {
+    public void testUpdateUser_Success() {
         // Arrange
         User updatedUser = testUser.toBuilder()
                 .username("Tom Thompson")
@@ -144,7 +144,7 @@ class UserServiceTests {
     }
 
     @Test
-    void testUpdateUser_FailureIfNotFound() {
+    public void testUpdateUser_FailureIfNotFound() {
         // Arrange
         when(userRepository.findById(TEST_ID)).thenReturn(Optional.empty());
 
@@ -165,7 +165,7 @@ class UserServiceTests {
 
     //region Delete
     @Test
-    void testDeleteUser() {
+    public void testDeleteUser_Success() {
         // Arrange
         when(userRepository.existsById(TEST_ID)).thenReturn(true);
         doNothing().when(userRepository).deleteById(TEST_ID);
@@ -177,7 +177,7 @@ class UserServiceTests {
     }
 
     @Test
-    void testDeleteUser_FailureIfNotFound() {
+    public void testDeleteUser_FailureIfNotFound() {
         // Arrange
         when(userRepository.existsById(TEST_ID)).thenReturn(false);
 

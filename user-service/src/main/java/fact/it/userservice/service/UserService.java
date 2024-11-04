@@ -62,7 +62,7 @@ public class UserService {
     }
 
     /**
-     * Retrieves all users in the system.
+     * Retrieves all users.
      *
      * @return List of UserResponse objects containing all users' information
      */
