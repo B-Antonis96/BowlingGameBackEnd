@@ -3,6 +3,8 @@ package fact.it.gameservice.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "games")
 @Data
@@ -14,7 +16,10 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long userId;
     private int currentTurn;
     private int totalScore;
     private boolean gameFinished;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
