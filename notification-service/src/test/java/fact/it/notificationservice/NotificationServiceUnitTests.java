@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class NotificationServiceUnitTests {
+public class NotificationServiceUnitTests {
 
     @Mock
     private NotificationRepository notificationRepository;
@@ -54,7 +54,7 @@ class NotificationServiceUnitTests {
 
     //region Create
     @Test
-    void testCreateNotification() {
+    public void testCreateNotification_Success() {
         // Arrange
         when(notificationRepository.save(any(Notification.class))).thenReturn(testNotification);
 
@@ -71,7 +71,7 @@ class NotificationServiceUnitTests {
 
     //region Read
     @Test
-    void testGetNotificationById() {
+    public void testGetNotificationById_Success() {
         // Arrange
         when(notificationRepository.findById(TEST_ID)).thenReturn(Optional.of(testNotification));
 
@@ -86,7 +86,7 @@ class NotificationServiceUnitTests {
     }
 
     @Test
-    void testGetNotification_FailureIfNotFound() {
+    public void testGetNotification_FailureIfNotFound() {
         // Arrange
         when(notificationRepository.findById(TEST_ID)).thenReturn(Optional.empty());
 
@@ -97,7 +97,7 @@ class NotificationServiceUnitTests {
     }
 
     @Test
-    void testGetAllNotifications() {
+    public void testGetAllNotifications_Success() {
         // Arrange
         List<Notification> notifications = Arrays.asList(
                 testNotification,
@@ -117,7 +117,7 @@ class NotificationServiceUnitTests {
 
     //region Update
     @Test
-    void testUpdateNotification() {
+    public void testUpdateNotification_Success() {
         // Arrange
         Notification updatedNotification = testNotification.toBuilder()
                 .message("Updated Message")
@@ -140,7 +140,7 @@ class NotificationServiceUnitTests {
     }
 
     @Test
-    void testUpdateNotification_FailureIfNotFound() {
+    public void testUpdateNotification_FailureIfNotFound() {
         // Arrange
         when(notificationRepository.findById(TEST_ID)).thenReturn(Optional.empty());
 
@@ -160,7 +160,7 @@ class NotificationServiceUnitTests {
 
     //region Delete
     @Test
-    void testDeleteNotification() {
+    public void testDeleteNotification_Success() {
         // Arrange
         when(notificationRepository.existsById(TEST_ID)).thenReturn(true);
         doNothing().when(notificationRepository).deleteById(TEST_ID);
@@ -172,7 +172,7 @@ class NotificationServiceUnitTests {
     }
 
     @Test
-    void testDeleteNotification_FailureIfNotFound() {
+    public void testDeleteNotification_FailureIfNotFound() {
         // Arrange
         when(notificationRepository.existsById(TEST_ID)).thenReturn(false);
 
