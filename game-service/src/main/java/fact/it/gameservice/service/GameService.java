@@ -64,9 +64,9 @@ public class GameService {
     }
 
     /**
-     * Retrieves all users in the system.
+     * Retrieves all games.
      *
-     * @return List of UserResponse objects containing all users' information
+     * @return List of GameResponse objects containing all games' information
      */
     @Transactional(readOnly = true)
     public List<GameResponse> getAllGames() {
