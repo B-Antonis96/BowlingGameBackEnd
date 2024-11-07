@@ -12,7 +12,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # Stage 2: Create the final image
-FROM maven:3.9-eclipse-temurin-17
+FROM eclipse-temurin:17-jre-noble
 
 # Expose the application port
 EXPOSE 8080
