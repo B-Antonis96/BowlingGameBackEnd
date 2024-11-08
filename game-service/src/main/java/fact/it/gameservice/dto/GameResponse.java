@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class GameResponse {
     private Long id;
-    private Long userId;
+    // private Long userId;
     private int currentTurn;
     private int totalScore;
     private boolean gameFinished;

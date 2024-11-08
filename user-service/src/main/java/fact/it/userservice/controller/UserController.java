@@ -82,4 +82,15 @@ public class UserController {
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
+
+    /**
+     * Retrieves the leaderboard with the top 25 users by high score.
+     *
+     * @return List of UserResponse objects representing the leaderboard
+     */
+    @GetMapping("/leaderboard")
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserResponse> getLeaderboard() {
+        return userService.getLeaderboard();
+    }
 }

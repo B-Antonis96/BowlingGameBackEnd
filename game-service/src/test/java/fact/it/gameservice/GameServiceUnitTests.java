@@ -41,7 +41,7 @@ public class GameServiceUnitTests {
         // Initialize test data
         testGame = Game.builder()
                 .id(TEST_ID)
-                .userId(TEST_USER_ID)
+                // .userId(TEST_USER_ID)
                 .currentTurn(1)
                 .totalScore(0)
                 .gameFinished(false)
@@ -50,7 +50,7 @@ public class GameServiceUnitTests {
                 .build();
 
         testGameRequest = GameRequest.builder()
-                .userId(TEST_USER_ID)
+                // .userId(TEST_USER_ID)
                 .currentTurn(1)
                 .totalScore(0)
                 .gameFinished(false)
@@ -58,7 +58,7 @@ public class GameServiceUnitTests {
     }
 
     @Test
-   public void createGame_Success() {
+    public void createGame_Success() {
         // Arrange
         when(gameRepository.save(any(Game.class))).thenReturn(testGame);
 
@@ -68,7 +68,7 @@ public class GameServiceUnitTests {
         // Assert
         assertNotNull(response);
         assertEquals(TEST_ID, response.getId());
-        assertEquals(TEST_USER_ID, response.getUserId());
+        // assertEquals(TEST_USER_ID, response.getUserId());
         assertEquals(1, response.getCurrentTurn());
         assertEquals(0, response.getTotalScore());
         assertFalse(response.isGameFinished());
@@ -86,7 +86,7 @@ public class GameServiceUnitTests {
         // Assert
         assertNotNull(response);
         assertEquals(TEST_ID, response.getId());
-        assertEquals(TEST_USER_ID, response.getUserId());
+        // assertEquals(TEST_USER_ID, response.getUserId());
         verify(gameRepository, times(1)).findById(TEST_ID);
     }
 
@@ -105,7 +105,7 @@ public class GameServiceUnitTests {
         // Arrange
         Game secondGame = Game.builder()
                 .id(2L)
-                .userId(101L)
+                // .userId(101L)
                 .currentTurn(2)
                 .totalScore(100)
                 .gameFinished(false)
@@ -128,7 +128,7 @@ public class GameServiceUnitTests {
         when(gameRepository.save(any(Game.class))).thenReturn(testGame);
 
         GameRequest updateRequest = GameRequest.builder()
-                .userId(TEST_USER_ID)
+                // .userId(TEST_USER_ID)
                 .currentTurn(2)
                 .totalScore(100)
                 .gameFinished(true)

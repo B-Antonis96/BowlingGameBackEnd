@@ -35,7 +35,7 @@ public class GameService {
     public GameResponse createGame(@Valid GameRequest gameRequest) {
 
         Game game = Game.builder()
-                .userId(gameRequest.getUserId())
+                // .userId(gameRequest.getUserId())
                 .currentTurn(1)
                 .totalScore(0)
                 .gameFinished(false)
@@ -120,7 +120,7 @@ public class GameService {
     private GameResponse mapToResponse(Game game) {
         return GameResponse.builder()
                 .id(game.getId())
-                .userId(game.getUserId())
+                // .userId(game.getUserId())
                 .currentTurn(game.getCurrentTurn())
                 .totalScore(game.getTotalScore())
                 .gameFinished(game.isGameFinished())

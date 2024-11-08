@@ -115,6 +115,18 @@ public class UserService {
     }
 
     /**
+     * Retrieves the top 10 users based on high scores.
+     *
+     * @return List of UserResponse objects representing the leaderboard
+     */
+    @Transactional(readOnly = true)
+    public List<UserResponse> getLeaderboard() {
+        return userRepository.findTop10ByHighScoreOrderByHighScoreDesc().stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Maps a User entity to a UserResponse DTO.
      *
      * @param user the User entity to map
