@@ -36,7 +36,7 @@ public class SecurityConfig {
         public CorsWebFilter corsFilter() {
                 CorsConfiguration config = new CorsConfiguration();
                 config.setAllowCredentials(true);
-                config.addAllowedOrigin("http://localhost:50849/"); // Replace with frontend origin
+                config.addAllowedOrigin("http://antdom.orchestratix.com:61808/"); // Replace with frontend origin
                 config.addAllowedHeader("*");
                 config.addAllowedMethod("*");
 
