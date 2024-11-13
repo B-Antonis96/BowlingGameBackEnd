@@ -30,3 +30,22 @@ spring:
           uri: http://${NOTIFICATION_SERVICE_URI:notification-service:8080}
           predicates:
             - Path=/api/notification/**
+
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: "gateway-client"
+            client-secret: "very-safe-secret"
+            authorization-grant-type: authorization_code
+            scope: openid, profile, roles
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+        provider:
+          keycloak:
+            issuer-uri: http://keycloak:8180/realms/bowlingrealm
+            authorization-uri: http://keycloak:8180/realms/bowlingrealm/protocol/openid-connect/auth
+            token-uri: http://keycloak:8180/realms/bowlingrealm/protocol/openid-connect/token
+            user-info-uri: http://keycloak:8180/realms/bowlingrealm/protocol/openid-connect/userinfo
+            jwk-set-uri: http://keycloak:8180/realms/bowlingrealm/protocol/openid-connect/certs
+            user-name-attribute: preferred_username
