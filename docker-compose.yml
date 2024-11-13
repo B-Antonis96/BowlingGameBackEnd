@@ -113,15 +113,44 @@ services:
     ports:
       - "8080:8080"
     depends_on:
+      - "keycloak"
       - "user-service"
       - "game-service"
       - "notification-service"
     environment:
+      SPRING_PROFILES_ACTIVE: "docker"
+      OAUTH2_CLIENT_ID: "gateway-client"
+      OAUTH2_CLIENT_SECRET: changeit
+      OAUTH2_PROVIDER_URL: http://keycloak:8180/realms/bowlingrealm
       USER_SERVICE_URI: ${USER_SERVICE_URI}
       GAME_SERVICE_URI: ${GAME_SERVICE_URI}
       NOTIFICATION_SERVICE_URI: ${NOTIFICATION_SERVICE_URI}
     networks:
       - "bowling-network"
+
+
+  ############
+  # EXTERNAL #
+  ############
+  keycloak:
+    image: "quay.io/keycloak/keycloak:22.0.1"
+    environment:
+      KEYCLOAK_ADMIN: "admin"
+      KEYCLOAK_ADMIN_PASSWORD: "admin"
+      KC_DB: dev-mem
+      KC_HOSTNAME: localhost
+      KC_HTTP_PORT: 8180
+    ports:
+      - "8180:8180"
+    command: start-dev
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8180"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    volumes:
+      - ./.init/keycloak-setup.sh:/opt/keycloak/keycloak-setup.sh
+    entrypoint: ["sh", "/opt/keycloak/keycloak-setup.sh"]
 
 
 ###########

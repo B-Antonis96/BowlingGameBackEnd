@@ -8,7 +8,6 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
-import org.springframework.http.HttpMethod;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -19,16 +18,14 @@ public class SecurityConfig {
         @Bean
         public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity serverHttpSecurity) {
                 serverHttpSecurity
-                                .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                                .authorizeExchange(exchange -> exchange.pathMatchers("/api/**")
-                                                .permitAll()
-                                                .anyExchange()
-                                                .authenticated())
-                /*
-                 * .oauth2ResourceServer(oauth2 -> oauth2
-                 * .jwt(withDefaults()))
-                 */
-                ;
+                        .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                        .authorizeExchange(exchange -> exchange
+                                .pathMatchers("/api/**")
+                                .permitAll()
+                                .anyExchange()
+                                .authenticated()
+                        )
+                        .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()));
                 return serverHttpSecurity.build();
         }
 
@@ -36,7 +33,7 @@ public class SecurityConfig {
         public CorsWebFilter corsFilter() {
                 CorsConfiguration config = new CorsConfiguration();
                 config.setAllowCredentials(true);
-                config.addAllowedOrigin("http://antdom.orchestratix.com:61808/"); // Replace with frontend origin
+                config.addAllowedOrigin("http://antdom.orchestratix.com:61808/"); // Replace with your frontend origin
                 config.addAllowedHeader("*");
                 config.addAllowedMethod("*");
 
