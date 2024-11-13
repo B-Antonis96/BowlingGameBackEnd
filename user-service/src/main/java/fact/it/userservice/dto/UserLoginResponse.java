@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponse {
+public class UserLoginResponse {
     private Long id;
     private String username;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private String accessToken;
+    private String refreshToken;
 }
