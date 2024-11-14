@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # Define static client ID and client secret
-CLIENT_ID="gateway-client"
-CLIENT_SECRET="very-safe-secret"
+CLIENT_ID="bowling-api-gateway"
+CLIENT_SECRET="J5yuzPLmOkAv06dUxghrjVwXZ1LwQEoe"
 
 # Start Keycloak in the background
 /opt/keycloak/bin/kc.sh start-dev &
 
 # Wait for Keycloak to start
-sleep 30
+sleep 35
 
 # Login to Keycloak Admin CLI
-/opt/keycloak/bin/kcadm.sh config credentials --server http://localhost:8180 --realm master --user admin --password admin
+/opt/keycloak/bin/kcadm.sh config credentials --server http://localhost:8080 --realm master --user admin --password admin
 
 # Create Realm
 /opt/keycloak/bin/kcadm.sh create realms -s realm=bowlingrealm -s enabled=true
@@ -24,7 +24,7 @@ sleep 30
 CLIENT_UUID=$(/opt/keycloak/bin/kcadm.sh get clients -r bowlingrealm --fields id,clientId | grep -B 1 "\"$CLIENT_ID\"" | grep '"id"' | sed 's/.*"id" : "\(.*\)".*/\1/')
 
 # Set the client secret using the UUID
-/opt/keycloak/bin/kcadm.sh update clients/$CLIENT_UUID -r bowlingrealm -s clientAuthenticatorType=client-secret -s secret=$CLIENT_SECRET
+/opt/keycloak/bin/kcadm.sh update clients/"$CLIENT_UUID" -r bowlingrealm -s clientAuthenticatorType=client-secret -s secret=$CLIENT_SECRET
 
 # Create Bryan User
 /opt/keycloak/bin/kcadm.sh create users -r bowlingrealm -s username=bryan -s enabled=true

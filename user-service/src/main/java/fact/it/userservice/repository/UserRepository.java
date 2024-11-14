@@ -10,4 +10,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u ORDER BY u.highScore DESC LIMIT 10")
     List<User> findTop10ByHighScoreOrderByHighScoreDesc();
+
+    boolean existsUserByUsername(String username);
 }

@@ -117,14 +117,20 @@ services:
       - "user-service"
       - "game-service"
       - "notification-service"
+    restart: "on-failure"
     environment:
       SPRING_PROFILES_ACTIVE: "docker"
-      OAUTH2_CLIENT_ID: "gateway-client"
-      OAUTH2_CLIENT_SECRET: changeit
-      OAUTH2_PROVIDER_URL: http://keycloak:8180/realms/bowlingrealm
+      SPRING_CLOUD_GATEWAY_KEYCLOAK_URI: "http://keycloak:8080"
       USER_SERVICE_URI: ${USER_SERVICE_URI}
       GAME_SERVICE_URI: ${GAME_SERVICE_URI}
       NOTIFICATION_SERVICE_URI: ${NOTIFICATION_SERVICE_URI}
+      API_GATEWAY_URI: ${API_GATEWAY_URI}
+      KEYCLOAK_URI: ${KEYCLOAK_URI}
+      KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
+      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
+      OAUTH2_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
+      OAUTH2_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
+      OAUTH2_PROVIDER_URL: "http://${KEYCLOAK_URI}/realms/bowlingrealm"
     networks:
       - "bowling-network"
 
@@ -137,20 +143,23 @@ services:
     environment:
       KEYCLOAK_ADMIN: "admin"
       KEYCLOAK_ADMIN_PASSWORD: "admin"
-      KC_DB: dev-mem
-      KC_HOSTNAME: localhost
-      KC_HTTP_PORT: 8180
+      KC_DB: "dev-mem"
+      KC_HOSTNAME: "keycloak"
+      KC_HTTP_PORT: "8080"
     ports:
-      - "8180:8180"
-    command: start-dev
+      - "8180:8080"
+    command: "start-dev"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8180"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      test: ["CMD", "curl", "-f", "http://keycloak:8080/realms/bowlingrealm"]
+      interval: "30s"
+      timeout: "10s"
+      retries: 5
     volumes:
       - ./.init/keycloak-setup.sh:/opt/keycloak/keycloak-setup.sh
     entrypoint: ["sh", "/opt/keycloak/keycloak-setup.sh"]
+    networks:
+      - "bowling-network"
+
 
 
 ###########

@@ -16,8 +16,10 @@ public class UserRequest {
     @NotBlank(message = "Username is mandatory")
     @Size(max = 16, message = "Username cannot exceed 16 characters")
     private String username;
+
     @NotBlank(message = "Token is mandatory")
     private String token;
+
     @Min(value = 0, message = "High score must be non-negative")
     private int highScore;
 }
