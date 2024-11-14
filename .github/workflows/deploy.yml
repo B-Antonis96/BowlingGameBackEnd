@@ -28,8 +28,8 @@ jobs:
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64 \
-            -t mydockerhubusername/user-service:${{ github.sha }} \
-            -t mydockerhubusername/user-service:latest \
+            -t ${{ secrets.DOCKER_USERNAME }}/user-service:${{ github.sha }} \
+            -t ${{ secrets.DOCKER_USERNAME }}/user-service:latest \
             --push \
             ./user-service
 
@@ -37,8 +37,8 @@ jobs:
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64 \
-            -t mydockerhubusername/game-service:${{ github.sha }} \
-            -t mydockerhubusername/game-service:latest \
+            -t ${{ secrets.DOCKER_USERNAME }}/game-service:${{ github.sha }} \
+            -t ${{ secrets.DOCKER_USERNAME }}/game-service:latest \
             --push \
             ./game-service
 
@@ -46,8 +46,8 @@ jobs:
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64 \
-            -t mydockerhubusername/notification-service:${{ github.sha }} \
-            -t mydockerhubusername/notification-service:latest \
+            -t ${{ secrets.DOCKER_USERNAME }}/notification-service:${{ github.sha }} \
+            -t ${{ secrets.DOCKER_USERNAME }}/notification-service:latest \
             --push \
             ./notification-service
 
@@ -55,7 +55,7 @@ jobs:
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64 \
-            -t mydockerhubusername/api-gateway:${{ github.sha }} \
-            -t mydockerhubusername/api-gateway:latest \
+            -t ${{ secrets.DOCKER_USERNAME }}/api-gateway:${{ github.sha }} \
+            -t ${{ secrets.DOCKER_USERNAME }}/api-gateway:latest \
             --push \
             ./api-gateway
