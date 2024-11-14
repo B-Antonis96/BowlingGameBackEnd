@@ -118,7 +118,7 @@ public class GameService {
     private GameResponse mapToResponse(Game game) {
         return GameResponse.builder()
                 .id(game.getId())
-                // .userId(game.getUserId())
+                .userId(game.getUserId())
                 .currentTurn(game.getCurrentTurn())
                 .totalScore(game.getTotalScore())
                 .gameFinished(game.isGameFinished())
