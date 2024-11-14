@@ -6,6 +6,7 @@ import fact.it.notificationservice.service.NotificationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,15 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
+    /**
+     * Check API is running.
+     *
+     * @return NotificationResponse containing the created notification details
+     */
+    @GetMapping("/ping")
+    public ResponseEntity<String> ping() {
+        return ResponseEntity.ok("Service is reachable");
+    }
 
     /**
      * Creates a new notification.

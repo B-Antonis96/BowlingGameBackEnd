@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 public class GameService {
 
     private final GameRepository gameRepository;
-    // private final WebClient webClient;
 
     /**
      * Creates a new game.
@@ -31,10 +30,10 @@ public class GameService {
      * @throws ConstraintViolationException if validation fails
      */
     @Transactional
-    public GameResponse createGame() {
+    public GameResponse createGame(Long userId) {
 
         Game game = Game.builder()
-                // .userId(gameRequest.getUserId())
+                .userId(userId)
                 .currentTurn(1)
                 .totalScore(0)
                 .gameFinished(false)

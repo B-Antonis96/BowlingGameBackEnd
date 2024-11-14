@@ -62,7 +62,7 @@ public class GameServiceUnitTests {
         when(gameRepository.save(any(Game.class))).thenReturn(testGame);
 
         // Act
-        GameResponse response = gameService.createGame();
+        GameResponse response = gameService.createGame(1L);
 
         // Assert
         assertNotNull(response);
