@@ -20,13 +20,15 @@ public class SecurityConfig {
         @Bean
         public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity serverHttpSecurity) {
                 serverHttpSecurity
+                        .csrf(ServerHttpSecurity.CsrfSpec::disable)
                         .authorizeExchange(exchange ->
-                                exchange.pathMatchers("/api/auth/login**", "/login**").permitAll()
-                                        .anyExchange().authenticated()
-                        )
-                        .oauth2ResourceServer((oauth2) -> oauth2.jwt(withDefaults()))
-                        .oauth2Login(Customizer.withDefaults())
-                        .csrf(ServerHttpSecurity.CsrfSpec::disable);
+                                exchange.pathMatchers("/api/**")
+                                        .permitAll()
+                                        .anyExchange()
+                                        .authenticated()
+                        );
+//                        .oauth2ResourceServer((oauth2) -> oauth2.jwt(withDefaults()))
+//                        .oauth2Login(Customizer.withDefaults());
                 return serverHttpSecurity.build();
         }
 

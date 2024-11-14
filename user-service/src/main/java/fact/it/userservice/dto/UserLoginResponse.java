@@ -14,6 +14,5 @@ import java.time.LocalDateTime;
 public class UserLoginResponse {
     private Long id;
     private String username;
-//    private String accessToken;
-//    private String refreshToken;
+    private int highscore;
 }

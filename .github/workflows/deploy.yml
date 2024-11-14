@@ -1,5 +1,4 @@
 name: CI/CD Pipeline
-
 on:
   push:
     branches:
@@ -9,23 +8,15 @@ on:
       - master
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
+        uses: docker/setup-buildx-action@v2
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -33,7 +24,38 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker images
+      - name: Build and push user-service image
         run: |
-          docker-compose -f docker-compose.yml build
-          docker-compose -f docker-compose.yml push
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            -t mydockerhubusername/user-service:${{ github.sha }} \
+            -t mydockerhubusername/user-service:latest \
+            --push \
+            ./user-service
+
+      - name: Build and push game-service image
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            -t mydockerhubusername/game-service:${{ github.sha }} \
+            -t mydockerhubusername/game-service:latest \
+            --push \
+            ./game-service
+
+      - name: Build and push notification-service image
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            -t mydockerhubusername/notification-service:${{ github.sha }} \
+            -t mydockerhubusername/notification-service:latest \
+            --push \
+            ./notification-service
+
+      - name: Build and push api-gateway image
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            -t mydockerhubusername/api-gateway:${{ github.sha }} \
+            -t mydockerhubusername/api-gateway:latest \
+            --push \
+            ./api-gateway
