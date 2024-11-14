@@ -81,7 +81,7 @@ services:
     image: "bantonis96/notification-service:latest"
     ports:
       - ":8080"
-      - "8083:8080" # DEVELOPMENT ONLY
+#      - "8083:8080" # DEVELOPMENT ONLY
     depends_on:
       - "notification-db"
     environment:
