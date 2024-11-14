@@ -24,6 +24,7 @@ public class NotificationController {
      * @return NotificationResponse containing the created notification details
      */
     @GetMapping("/ping")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> ping() {
         return ResponseEntity.ok("Service is reachable");
     }
