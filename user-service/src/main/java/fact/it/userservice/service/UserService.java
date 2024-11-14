@@ -40,11 +40,13 @@ public class UserService {
             return UserLoginResponse.builder()
                     .id(user.getId())
                     .username(user.getUsername())
+                    .highscore(user.getHighScore())
                     .build();
         }
         else {
             User user = User.builder()
                     .username(userLoginRequest.getUsername())
+                    .highScore(0)
                     .createdAt(LocalDateTime.now())
                     .updatedAt(LocalDateTime.now())
                     .build();
@@ -54,6 +56,7 @@ public class UserService {
             return UserLoginResponse.builder()
                     .id(user.getId())
                     .username(user.getUsername())
+                    .highscore(user.getHighScore())
                     .build();
         }
     }
