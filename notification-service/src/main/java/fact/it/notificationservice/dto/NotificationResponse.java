@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -12,5 +14,6 @@ import lombok.NoArgsConstructor;
 public class NotificationResponse {
     private String id;
     private String message;
-    private Long gameId;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

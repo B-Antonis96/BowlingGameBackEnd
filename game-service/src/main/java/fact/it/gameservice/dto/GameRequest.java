@@ -10,5 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GameRequest {
-    private int pinsKnockedDown;
+    // private Long userId;
+    private int currentTurn;
+    private int totalScore;
+    private boolean gameFinished;
 }
