@@ -22,20 +22,18 @@ import java.util.stream.Collectors;
 public class GameService {
 
     private final GameRepository gameRepository;
-    // private final WebClient webClient;
 
     /**
      * Creates a new game.
      *
-     * @param gameRequest DTO containing game information to be created
      * @return GameResponse containing the created game's information
      * @throws ConstraintViolationException if validation fails
      */
     @Transactional
-    public GameResponse createGame(@Valid GameRequest gameRequest) {
+    public GameResponse createGame(Long userId) {
 
         Game game = Game.builder()
-                // .userId(gameRequest.getUserId())
+                .userId(userId)
                 .currentTurn(1)
                 .totalScore(0)
                 .gameFinished(false)

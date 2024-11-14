@@ -21,15 +21,14 @@ public class GameController {
 
     /**
      * Creates a new game.
-     *
-     * @param gameRequest DTO containing game information to be created
+     * @param userId the ID of the coupled user to retrieve game
      * @return GameResponse containing the created game's information
      * @throws ConstraintViolationException if validation fails
      */
-    @PostMapping("/create")
+    @PostMapping("/create/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public GameResponse createGame(@Valid @RequestBody GameRequest gameRequest) {
-        return gameService.createGame(gameRequest);
+    public GameResponse createGame(@PathVariable Long userId) {
+        return gameService.createGame(userId);
     }
 
     /**

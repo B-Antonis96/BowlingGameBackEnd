@@ -34,7 +34,6 @@ public class GameServiceUnitTests {
     private Game testGame;
     private GameRequest testGameRequest;
     private final Long TEST_ID = 1L;
-    private final Long TEST_USER_ID = 100L;
 
     @BeforeEach
     void setUp() {
@@ -63,7 +62,7 @@ public class GameServiceUnitTests {
         when(gameRepository.save(any(Game.class))).thenReturn(testGame);
 
         // Act
-        GameResponse response = gameService.createGame(testGameRequest);
+        GameResponse response = gameService.createGame(1L);
 
         // Assert
         assertNotNull(response);
@@ -105,7 +104,6 @@ public class GameServiceUnitTests {
         // Arrange
         Game secondGame = Game.builder()
                 .id(2L)
-                // .userId(101L)
                 .currentTurn(2)
                 .totalScore(100)
                 .gameFinished(false)
@@ -128,7 +126,6 @@ public class GameServiceUnitTests {
         when(gameRepository.save(any(Game.class))).thenReturn(testGame);
 
         GameRequest updateRequest = GameRequest.builder()
-                // .userId(TEST_USER_ID)
                 .currentTurn(2)
                 .totalScore(100)
                 .gameFinished(true)

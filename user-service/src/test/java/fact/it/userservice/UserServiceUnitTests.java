@@ -1,5 +1,7 @@
 package fact.it.userservice;
 
+import fact.it.userservice.dto.UserLoginRequest;
+import fact.it.userservice.dto.UserLoginResponse;
 import fact.it.userservice.dto.UserRequest;
 import fact.it.userservice.dto.UserResponse;
 import fact.it.userservice.model.User;
@@ -32,6 +34,7 @@ public class UserServiceUnitTests {
     private UserService userService;
 
     private User testUser;
+    private UserLoginRequest testUserLoginRequest;
     private UserRequest testUserRequest;
     private LocalDateTime now;
     private static final Long TEST_ID = 1L;
@@ -57,20 +60,20 @@ public class UserServiceUnitTests {
     }
 
     //region Create
-//    @Test
-//    public void testCreateUser_Success() {
-//        // Arrange
-//        when(userRepository.save(any(User.class))).thenReturn(testUser);
-//
-//        // Act
-//        UserResponse response = userService.createUser(testUserRequest);
-//
-//        // Assert
-//        assertNotNull(response);
-//        assertEquals(TEST_ID, response.getId());
-//        assertEquals(TEST_USERNAME, response.getUsername());
-//        verify(userRepository, times(1)).save(any(User.class));
-//    }
+    @Test
+    public void testCreateUser_Success() {
+        // Arrange
+        when(userRepository.save(any(User.class))).thenReturn(testUser);
+
+        // Act
+        UserLoginResponse response = userService.createUser(testUserLoginRequest);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(TEST_ID, response.getId());
+        assertEquals(TEST_USERNAME, response.getUsername());
+        verify(userRepository, times(1)).save(any(User.class));
+    }
     //endregion
 
     //region Read
@@ -85,6 +88,7 @@ public class UserServiceUnitTests {
         // Assert
         assertNotNull(response);
         assertEquals(TEST_USERNAME, response.getUsername());
+        assertEquals(TEST_HIGH_SCORE, response.getHighScore());
         verify(userRepository, times(1)).findById(TEST_ID);
     }
 

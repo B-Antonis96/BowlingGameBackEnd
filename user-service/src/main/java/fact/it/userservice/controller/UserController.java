@@ -1,5 +1,7 @@
 package fact.it.userservice.controller;
 
+import fact.it.userservice.dto.UserLoginRequest;
+import fact.it.userservice.dto.UserLoginResponse;
 import fact.it.userservice.dto.UserRequest;
 import fact.it.userservice.dto.UserResponse;
 import fact.it.userservice.service.UserService;
@@ -22,14 +24,14 @@ public class UserController {
     /**
      * Creates a new user.
      *
-     * @param userRequest DTO containing user information to be created
+     * @param userLoginRequest DTO containing user information to be created
      * @return UserResponse containing the created user's information
      * @throws ConstraintViolationException if validation fails
      */
-    @PostMapping("/create")
+    @PostMapping("/login")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse createUser(@Valid @RequestBody UserRequest userRequest) {
-        return userService.createUser(userRequest);
+    public UserLoginResponse createUser(@Valid @RequestBody UserLoginRequest userLoginRequest) {
+        return userService.createUser(userLoginRequest);
     }
 
     /**

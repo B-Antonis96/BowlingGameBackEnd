@@ -13,6 +13,12 @@
         <module name="notification-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="api-gateway" target="17" />
+      <module name="game-service" target="17" />
+      <module name="notification-service" target="17" />
+      <module name="user-service" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
