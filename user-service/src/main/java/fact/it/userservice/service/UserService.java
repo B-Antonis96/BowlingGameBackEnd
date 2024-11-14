@@ -35,27 +35,27 @@ public class UserService {
      */
     @Transactional
     public UserLoginResponse createUser(@Valid UserLoginRequest userLoginRequest) {
-        Optional<User> existingUser = Optional.ofNullable(userRepository.findByUsername(userLoginRequest.getUsername()));
-
-        if (existingUser.isPresent()) {
+        if (userRepository.existsByUsername(userLoginRequest.getUsername())) {
+            User user = userRepository.findByUsername(userLoginRequest.getUsername());
             return UserLoginResponse.builder()
-                    .id(existingUser.get().getId())
-                    .username(existingUser.get().getUsername())
+                    .id(user.getId())
+                    .username(user.getUsername())
                     .build();
         }
+        else {
+            User user = User.builder()
+                    .username(userLoginRequest.getUsername())
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build();
 
-        User user = User.builder()
-                .username(userLoginRequest.getUsername())
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .build();
+            user = userRepository.save(user);
 
-        user = userRepository.save(user);
-
-        return UserLoginResponse.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .build();
+            return UserLoginResponse.builder()
+                    .id(user.getId())
+                    .username(user.getUsername())
+                    .build();
+        }
     }
 
     /**
