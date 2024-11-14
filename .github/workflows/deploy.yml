@@ -8,49 +8,54 @@ on:
       - master
 
 jobs:
-  build_and_push:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_TAG: latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
-      # Build and push each service individually
-      - name: Build and push user-service
+      - name: Build and push user-service image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/user-service:${{ env.IMAGE_TAG }} -f user-service/Dockerfile ./user-service
-          docker push ${{ secrets.DOCKER_USERNAME }}/user-service:${{ env.IMAGE_TAG }}
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            -t mydockerhubusername/user-service:${{ github.sha }} \
+            -t mydockerhubusername/user-service:latest \
+            --push \
+            ./user-service
 
-      - name: Build and push game-service
+      - name: Build and push game-service image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/game-service:${{ env.IMAGE_TAG }} -f game-service/Dockerfile ./game-service
-          docker push ${{ secrets.DOCKER_USERNAME }}/game-service:${{ env.IMAGE_TAG }}
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            -t mydockerhubusername/game-service:${{ github.sha }} \
+            -t mydockerhubusername/game-service:latest \
+            --push \
+            ./game-service
 
-      - name: Build and push notification-service
+      - name: Build and push notification-service image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/notification-service:${{ env.IMAGE_TAG }} -f notification-service/Dockerfile ./notification-service
-          docker push ${{ secrets.DOCKER_USERNAME }}/notification-service:${{ env.IMAGE_TAG }}
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            -t mydockerhubusername/notification-service:${{ github.sha }} \
+            -t mydockerhubusername/notification-service:latest \
+            --push \
+            ./notification-service
 
-      - name: Build and push api-gateway
+      - name: Build and push api-gateway image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/api-gateway:${{ env.IMAGE_TAG }} -f api-gateway/Dockerfile ./api-gateway
-          docker push ${{ secrets.DOCKER_USERNAME }}/api-gateway:${{ env.IMAGE_TAG }}
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            -t mydockerhubusername/api-gateway:${{ github.sha }} \
+            -t mydockerhubusername/api-gateway:latest \
+            --push \
+            ./api-gateway

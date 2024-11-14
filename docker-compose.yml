@@ -6,8 +6,8 @@ services:
   user-db:
     image: "mysql:latest"
     ports:
-#      - ":3306"
-      - "3307:3306" # DEVELOPMENT/ DBA ONLY
+      - ":3306"
+#      - "3307:3306" # DEVELOPMENT/ DBA ONLY
     environment:
       MYSQL_ROOT_USER: ${USER_DB_USERNAME}
       MYSQL_ROOT_PASSWORD: ${USER_DB_PASSWORD}
@@ -20,8 +20,8 @@ services:
   game-db:
     image: "mysql:latest"
     ports:
-#      - ":3306"
-      - "3306:3306" # DEVELOPMENT/ DBA ONLY
+      - ":3306"
+#      - "3306:3306" # DEVELOPMENT/ DBA ONLY
     environment:
       MYSQL_ROOT_USER: ${GAME_DB_USERNAME}
       MYSQL_ROOT_PASSWORD: ${GAME_DB_PASSWORD}
@@ -34,8 +34,8 @@ services:
   notification-db:
     image: "mongo:latest"
     ports:
-#      - ":27017"
-      - "27017:27017" # DEVELOPMENT/ DBA ONLY
+      - ":27017"
+#      - "27017:27017" # DEVELOPMENT/ DBA ONLY
     volumes:
       - "mongo-data:/data/db"
     networks:
@@ -46,12 +46,10 @@ services:
   # SERVICES #
   ############
   user-service:
-    build:
-      context: "./user-service"
-      dockerfile: "Dockerfile"
+    image: "bantonis96/user-service:latest"
     ports:
-#      - ":8080"
-      - "8081:8080" # DEVELOPMENT ONLY
+      - ":8080"
+#      - "8081:8080" # DEVELOPMENT ONLY
     depends_on:
       - "user-db"
     environment:
@@ -64,12 +62,10 @@ services:
       - "bowling-network"
 
   game-service:
-    build:
-      context: "./game-service"
-      dockerfile: "Dockerfile"
+    image: "bantonis96/game-service:latest"
     ports:
-#      - ":8080"
-      - "8082:8080" # DEVELOPMENT ONLY
+      - ":8080"
+#      - "8082:8080" # DEVELOPMENT ONLY
     depends_on:
       - "game-db"
     environment:
@@ -82,11 +78,9 @@ services:
       - "bowling-network"
 
   notification-service:
-    build:
-      context: "./notification-service"
-      dockerfile: "Dockerfile"
+    image: "bantonis96/notification-service:latest"
     ports:
-#      - ":8080"
+      - ":8080"
       - "8083:8080" # DEVELOPMENT ONLY
     depends_on:
       - "notification-db"
@@ -104,9 +98,7 @@ services:
   # GATEWAY #
   ###########
   api-gateway:
-    build:
-      context: "./api-gateway"
-      dockerfile: "Dockerfile"
+    image: "bantonis96/api-gateway:latest"
     ports:
       - "8086:8080"
     depends_on:
@@ -120,8 +112,42 @@ services:
       USER_SERVICE_URI: ${USER_SERVICE_URI}
       GAME_SERVICE_URI: ${GAME_SERVICE_URI}
       NOTIFICATION_SERVICE_URI: ${NOTIFICATION_SERVICE_URI}
+#      API_GATEWAY_URI: ${API_GATEWAY_URI}
+#      KEYCLOAK_URI: ${KEYCLOAK_URI}
+#      KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
+#      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
+#      OAUTH2_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
+#      OAUTH2_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
+#      OAUTH2_PROVIDER_URL: "http://${KEYCLOAK_URI}/realms/bowlingrealm"
+#      SPRING_CLOUD_GATEWAY_KEYCLOAK_URI: "http://keycloak:8080"
     networks:
       - "bowling-network"
+
+
+  ###########
+  # KEYCLOAK #
+  ###########
+#  keycloak:
+#    image: "quay.io/keycloak/keycloak:22.0.1"
+#    environment:
+#      KEYCLOAK_ADMIN: "admin"
+#      KEYCLOAK_ADMIN_PASSWORD: "admin"
+#      KC_DB: "dev-mem"
+#      KC_HOSTNAME: "keycloak"
+#      KC_HTTP_PORT: "8080"
+#    ports:
+#      - "8180:8080"
+#    command: "start-dev"
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://keycloak:8080/realms/bowlingrealm"]
+#      interval: "30s"
+#      timeout: "10s"
+#      retries: 5
+#    volumes:
+#      - ./.init/keycloak-setup.sh:/opt/keycloak/keycloak-setup.sh
+#    entrypoint: ["sh", "/opt/keycloak/keycloak-setup.sh"]
+#    networks:
+#      - "bowling-network"
 
 
 ###########
