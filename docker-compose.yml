@@ -36,9 +36,6 @@ services:
     ports:
 #      - ":27017"
       - "27017:27017" # DEVELOPMENT/ DBA ONLY
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${NOTIFICATION_DB_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${NOTIFICATION_DB_PASSWORD}
     volumes:
       - "mongo-data:/data/db"
     networks:
