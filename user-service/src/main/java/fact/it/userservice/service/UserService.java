@@ -1,5 +1,7 @@
 package fact.it.userservice.service;
 
+import fact.it.userservice.dto.UserLoginRequest;
+import fact.it.userservice.dto.UserLoginResponse;
 import fact.it.userservice.dto.UserRequest;
 import fact.it.userservice.dto.UserResponse;
 import fact.it.userservice.model.User;
@@ -10,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
@@ -28,31 +29,34 @@ public class UserService {
     /**
      * Creates a new user.
      *
-     * @param userRequest DTO containing user information to be created
+     * @param userLoginRequest DTO containing user information to be created
      * @return UserResponse containing the created user's information
      * @throws ConstraintViolationException if validation fails
      */
     @Transactional
-    public UserResponse createUser(@Valid UserRequest userRequest) {
-        Optional<User> existingUser = Optional.ofNullable(userRepository.findByUsername(userRequest.getUsername()));
+    public UserLoginResponse createUser(@Valid UserLoginRequest userLoginRequest) {
+        Optional<User> existingUser = Optional.ofNullable(userRepository.findByUsername(userLoginRequest.getUsername()));
 
         if (existingUser.isPresent()) {
-            return mapToResponse(existingUser.get());
+            return UserLoginResponse.builder()
+                    .id(existingUser.get().getId())
+                    .username(existingUser.get().getUsername())
+                    .build();
         }
 
         User user = User.builder()
-                .username(userRequest.getUsername())
-                .highScore(userRequest.getHighScore())
+                .username(userLoginRequest.getUsername())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
 
         user = userRepository.save(user);
 
-        return mapToResponse(user);
+        return UserLoginResponse.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .build();
     }
-
-
 
     /**
      * Retrieves a user by their ID.
