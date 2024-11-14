@@ -22,14 +22,13 @@ public class GameController {
     /**
      * Creates a new game.
      *
-     * @param gameRequest DTO containing game information to be created
      * @return GameResponse containing the created game's information
      * @throws ConstraintViolationException if validation fails
      */
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public GameResponse createGame(@Valid @RequestBody GameRequest gameRequest) {
-        return gameService.createGame(gameRequest);
+    public GameResponse createGame() {
+        return gameService.createGame();
     }
 
     /**

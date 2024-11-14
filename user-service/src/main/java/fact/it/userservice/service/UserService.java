@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +34,11 @@ public class UserService {
      */
     @Transactional
     public UserResponse createUser(@Valid UserRequest userRequest) {
+        Optional<User> existingUser = Optional.ofNullable(userRepository.findByUsername(userRequest.getUsername()));
+
+        if (existingUser.isPresent()) {
+            return mapToResponse(existingUser.get());
+        }
 
         User user = User.builder()
                 .username(userRequest.getUsername())
@@ -45,6 +51,8 @@ public class UserService {
 
         return mapToResponse(user);
     }
+
+
 
     /**
      * Retrieves a user by their ID.

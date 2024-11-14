@@ -26,7 +26,7 @@ public class UserController {
      * @return UserResponse containing the created user's information
      * @throws ConstraintViolationException if validation fails
      */
-    @PostMapping("/create")
+    @PostMapping("/login")
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponse createUser(@Valid @RequestBody UserRequest userRequest) {
         return userService.createUser(userRequest);

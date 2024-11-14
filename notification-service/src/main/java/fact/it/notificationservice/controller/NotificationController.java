@@ -17,6 +17,7 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
+
     /**
      * Creates a new notification.
      *
